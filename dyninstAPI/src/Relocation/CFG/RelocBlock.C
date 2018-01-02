@@ -367,8 +367,15 @@ void RelocBlock::preserveBlockGap() {
          continue;
       }
       if ((*iter)->type() == ParseAPI::CALL_FT ||
-          (*iter)->type() == ParseAPI::FALLTHROUGH ||
-          (*iter)->type() == ParseAPI::COND_NOT_TAKEN) {
+          (*iter)->type() == ParseAPI::FALLTHROUGH) {// ||
+				 // begin comment - Vaibhav Sharma (vaibhav@umn.edu)
+				 // removing COND_NOT_TAKEN because some COND_TAKEN edges are incorrectly
+				 // marked as being COND_NOT_TAKEN edges in dyninst 
+				 // this happened when doing binary mutation with the cruise binary with 
+				 // -O2 optimization option, see cruise binary here -
+				 // https://github.umn.edu/taejoon/component-based-assurance/tree/master/coverage/exp250-in/cruise
+				 // end comment
+         //(*iter)->type() == ParseAPI::COND_NOT_TAKEN) {
          // Okay, I admit - I want to see this code trigger in the
          // fallthrough or cond_not_taken cases...
          hasFT = true;
